@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Valentine’s Day ❤️</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    height:100vh;
+    font-family:'Segoe UI',sans-serif;
+    background:radial-gradient(circle at top,#2a0a12,#090204);
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* Sparkles */
+.sparkle{
+    position:absolute;
+    width:4px;
+    height:4px;
+    background:#ff9bb3;
+    border-radius:50%;
+    animation:sparkle 6s linear infinite;
+}
+@keyframes sparkle{
+    from{transform:translateY(110vh);opacity:1}
+    to{transform:translateY(-10vh);opacity:0}
+}
+
+/* Card */
+.card{
+    background:linear-gradient(145deg,#6a3b2e,#8b5e3c);
+    padding:45px 55px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 25px 60px rgba(0,0,0,.6),
+               inset 0 0 30px rgba(255,255,255,.15);
+    color:#fff;
+    animation:pop 1s ease;
+    z-index:5;
+}
+@keyframes pop{
+    from{transform:scale(.7);opacity:0}
+    to{transform:scale(1);opacity:1}
+}
+
+h1{
+    font-size:2.5rem;
+    color:#ffe1e6;
+    text-shadow:0 0 18px rgba(255,120,150,.8);
+}
+p{font-size:1.1rem;color:#fff1f3}
+
+/* Buttons */
+.btn{
+    padding:14px 32px;
+    font-size:18px;
+    border:none;
+    border-radius:14px;
+    cursor:pointer;
+    margin:10px;
+    transition:.3s;
+}
+
+#yes{
+    background:linear-gradient(135deg,#ff4d6d,#ff8fa3);
+    color:#fff;
+    box-shadow:0 10px 30px rgba(255,77,109,.6);
+}
+#yes:hover{transform:scale(1.15)}
+
+#no{
+    background:#d2b48c;
+    color:#3b1f12;
+    position:absolute;
+}
+
+/* Music */
+.music-btn{
+    padding:10px 22px;
+    border-radius:12px;
+    border:none;
+    background:#3b1f12;
+    color:#ffe1e6;
+    cursor:pointer;
+}
+.music-btn:hover{background:#5a2d1b}
+
+input[type=range]{width:160px;margin-top:10px}
+
+/* Celebration */
+.glow{
+    font-size:3rem;
+    color:#ff5f8a;
+    text-shadow:0 0 10px #ff8fab,
+                0 0 30px #ff4d6d,
+                0 0 60px #ff1a75;
+    animation:heartbeat 2s infinite;
+    text-align:center;
+}
+@keyframes heartbeat{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.08)}
+}
+
+/* Fireworks */
+.fire{
+    position:absolute;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    animation:blast 1.4s ease-out forwards;
+}
+@keyframes blast{
+    to{
+        transform:translate(var(--x),var(--y)) scale(0);
+        opacity:0;
+    }
+}
+
+/* Hearts */
+.heart{
+    position:absolute;
+    bottom:-20px;
+    font-size:26px;
+    animation:float 6s linear infinite;
+}
+@keyframes float{
+    to{transform:translateY(-120vh);opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+    <h1>Happy Valentine’s Day ❤️</h1>
+    <p id="msg">Will you be my Valentine?</p>
+
+    <button class="btn" id="yes">Yes 💖</button>
+    <button class="btn" id="no">No 🙈</button>
+
+    <p style="margin-top:15px;">🎵 Romantic music</p>
+    <button class="music-btn" onclick="toggleMusic()">Play / Pause</button><br>
+    <input type="range" min="0" max="1" step="0.01" value="0.4" onchange="music.volume=this.value">
+
+    <p style="margin-top:15px;">📲 Share love</p>
+    <button class="music-btn" onclick="share()">Share on WhatsApp</button>
+</div>
+
+<audio id="music" loop>
+    <!-- Trending romantic royalty-free song -->
+    <source src="https://cdn.pixabay.com/audio/2022/10/09/audio_3b3a1f6a52.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const noBtn=document.getElementById("no");
+const music=document.getElementById("music");
+music.volume=0.4;
+
+/* Name personalization */
+const name=prompt("Enter your name ❤️","");
+if(name) document.getElementById("msg").innerText =
+`Hey ${name}, will you be my Valentine?`;
+
+/* Shy NO */
+noBtn.addEventListener("mouseover",()=>{
+    noBtn.style.left=Math.random()*(innerWidth-80)+"px";
+    noBtn.style.top=Math.random()*(innerHeight-40)+"px";
+});
+
+/* Music toggle */
+function toggleMusic(){
+    music.paused?fadeIn():music.pause();
+}
+
+/* Smooth fade-in */
+function fadeIn(){
+    music.volume=0;
+    music.play();
+    let v=0;
+    const fade=setInterval(()=>{
+        if(v>=0.4){clearInterval(fade)}
+        music.volume=v+=0.02;
+    },100);
+}
+
+/* YES click */
+document.getElementById("yes").onclick=()=>{
+    document.body.innerHTML=`
+        <div style="display:flex;justify-content:center;align-items:center;height:100vh;">
+            <div class="glow">You Said YES 💕<br>Happy Valentine’s Day</div>
+        </div>`;
+    fadeIn();
+    fireworks();
+    hearts();
+};
+
+/* Fireworks */
+function fireworks(){
+    setInterval(()=>{
+        for(let i=0;i<25;i++){
+            const f=document.createElement("div");
+            f.className="fire";
+            f.style.left=Math.random()*innerWidth+"px";
+            f.style.top=Math.random()*innerHeight+"px";
+            f.style.background=`hsl(${Math.random()*360},100%,60%)`;
+            f.style.setProperty("--x",(Math.random()*300-150)+"px");
+            f.style.setProperty("--y",(Math.random()*300-150)+"px");
+            document.body.appendChild(f);
+            setTimeout(()=>f.remove(),1500);
+        }
+    },800);
+}
+
+/* Hearts */
+function hearts(){
+    setInterval(()=>{
+        const h=document.createElement("div");
+        h.className="heart";
+        h.innerHTML="❤️";
+        h.style.left=Math.random()*innerWidth+"px";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),6000);
+    },250);
+}
+
+/* WhatsApp share */
+function share(){
+    const text=encodeURIComponent("Happy Valentine’s Day ❤️\nMade something special for you 💖");
+    window.open(`https://wa.me/?text=${text}`,"_blank");
+}
+
+/* Sparkles */
+for(let i=0;i<60;i++){
+    const s=document.createElement("div");
+    s.className="sparkle";
+    s.style.left=Math.random()*100+"vw";
+    s.style.animationDelay=Math.random()*6+"s";
+    document.body.appendChild(s);
+}
+</script>
+
+</body>
+</html>
