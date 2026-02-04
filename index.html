@@ -135,14 +135,6 @@ p{font-size:1.1rem;color:#fff1f3}
 
 <script>
 const noBtn=document.getElementById("no");
-
-/* Name personalization */
-const name=prompt("Enter your name ❤️","");
-if(name){
-    document.getElementById("msg").innerText =
-    `Hey ${name}, will you be my Valentine?`;
-}
-
 /* Shy NO button */
 noBtn.addEventListener("mouseover",()=>{
     noBtn.style.left=Math.random()*(innerWidth-100)+"px";
